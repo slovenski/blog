@@ -1,9 +1,9 @@
 {
-  "name": "slovenski.github.io",
+  "name": "gibransvarga.com",
   "private": true,
   "description": "finder of new ways to confuse myself",
   "version": "1.0.0",
-  "homepage": "https://slovenski.github.io/",
+  "homepage": "https://gibransvarga.com/",
   "author": "Gibran Svarga <contact.gibransvarga@gmail.com>",
   "dependencies": {
     "@mdx-js/mdx": "^1.2.2",
