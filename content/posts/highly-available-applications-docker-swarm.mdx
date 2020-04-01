@@ -112,3 +112,18 @@ Hostname: swarm-worker-3
 Uuid: 809e52a3-735e-4d41-9457-0672c2d97372
 State: Peer in Cluster (Connected)
 ```
+
+### Security for the Volume
+
+File servers do not generally have firewalls as they are hosted in a secure zone of a private network. Just because it’s secure doesn’t mean you should leave it wide open for anyone with access to connect to.
+
+Using the `auth.allow` and `auth.reject` arguments in GlusterFS we can choose which IP addresses can access the volume. Access is provided at volume level, therefore you will need to alter access permissions on every new volume you create.
+
+To authorize all the nodes we have to connect to GlusterFS Volume, run the following command below:
+
+```
+[swarm-worker-1]# gluster volume set gfs auth.allow 10.148.0.228,10.148.0.229,10.148.0.230
+
+```
+
+
