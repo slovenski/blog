@@ -9,7 +9,8 @@ node_js:
 git:
   depth: 3
 
-script:
+before_deploy:
+  - yarn global add netlify-cli
   - yarn run build
 
 deploy:
