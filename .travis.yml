@@ -15,7 +15,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: netlify deploy --prod -s $NETLIFY_ID -t $NETLIFY_AUTH -p ./public
+  script: netlify deploy --prod --site $NETLIFY_ID --auth $NETLIFY_AUTH --dir ./public
   skip_cleanup: true
   on:
     branch: master
