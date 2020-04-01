@@ -1,0 +1,18 @@
+language: node_js
+cache:
+  - yarn
+node_js:
+  - '10'
+git:
+  depth: 3
+script:
+  - yarn run build
+deploy:
+  provider: netlify
+  edge: true
+  cleanup: false
+  site: $NETLIFY_ID
+  auth: $NETLIFY_AUTH
+  dir: ./public
+  on:
+    branch: master
