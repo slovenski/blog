@@ -4,13 +4,13 @@ const mdxFeed = require('gatsby-plugin-mdx/feed');
 module.exports = {
   siteMetadata: {
     title: `Gibran Svarga`,
-    siteUrl: `https://slovenski.github.io/`,
+    siteUrl: `https://gibransvarga.com/`,
     description: `I am Cyber Security Operation Engineer with strong focus on research, interactivity and development. I currently live in Jakarta, Indonesia and I have a job as the SecOps at{' '} <Link to="https://www.google.com/search?q=define%3Asomewhere&oq=define%3Asomewhere&aqs=chrome..69i57j69i58.309j0j7&sourceid=chrome&ie=UTF-8">somewhere</Link> that I couldn't tell you where it is. In my spare time, I like to hangout with my family, community, friends, and making life happier.`,
     author: `@gibransvarga`,
     keywords: [
-      'creative design',
-      'creative videographer',
+      'cyber-security',
       'devsecops',
+      'devops',
       'oss',
       'creative coding',
       'design systems',
