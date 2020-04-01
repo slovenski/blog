@@ -1,18 +1,20 @@
 language: node_js
+
 cache:
   - yarn
+
 node_js:
   - '10'
+
 git:
   depth: 3
+
 script:
   - yarn run build
+
 deploy:
-  provider: netlify
-  edge: true
-  cleanup: false
-  site: $NETLIFY_ID
-  auth: $NETLIFY_AUTH
-  dir: ./public
+  provider: script
+  script: netlify deploy --prod -s $NETLIFY_ID -t $NETLIFY_AUTH -p ./public
+  skip_cleanup: true
   on:
     branch: master
