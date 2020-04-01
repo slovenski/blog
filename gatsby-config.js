@@ -37,7 +37,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `slovenski.github.io`,
+        name: `gibransvarga.com`,
         short_name: `starter`,
         start_url: `/`,
         background_color: '#4e4bec',
