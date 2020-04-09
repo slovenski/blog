@@ -1,0 +1,14 @@
+[
+    {
+      "title": "Everything you need before running Elasticsearch cluster with Docker",
+      "description": "Elasticsearch Docker",
+      "link": "https://gist.github.com/slovenski/48cbcbdfe05fda0bbe02f988c75914fa",
+      "featured": true
+    },
+    {
+      "title": "Essential tooling to enable Continuous Security",
+      "description": "© Rich Mills",
+      "slides": "https://www.slideshare.net/RichMills4/devsecops-essential-tooling-to-enable-continuous-security-20190916",
+      "featured": false
+    }
+]

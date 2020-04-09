@@ -6,12 +6,14 @@ import { Pronunciation } from '@components/pronunciation';
 import { ProfileLinks } from '@components/profile-links';
 import { Footer } from '@components/footer';
 import { WritingFeatured } from '@components/writing-featured';
+import { ArchiveFeatured } from '@components/archive-featured';
 import { CycleMode } from '@components/cycle-mode';
 
 const Home = ({ data }) => {
   const {
     site,
     writingFeatured: { posts },
+    archiveFeatured: { archive },
   } = data;
 
   return (
@@ -44,6 +46,7 @@ const Home = ({ data }) => {
 
           <Flex flexWrap="wrap" justifyContent="space-between">
             <WritingFeatured posts={posts} mr={[3, 4]} />
+            <ArchiveFeatured archive={archive} mr={3} />
           </Flex>
 
         </main>
@@ -80,6 +83,19 @@ export const pageQuery = graphql`
         }
       }
     }
+
+    archiveFeatured: allArchiveJson(
+      limit: 4
+      filter: { featured: { eq: true } }
+    ) {
+      archive: nodes {
+        id
+        link
+        title
+        description
+        featured
+      }
+    }  
   }
 `;
 
