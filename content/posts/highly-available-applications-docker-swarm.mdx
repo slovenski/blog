@@ -1,5 +1,5 @@
 ---
-title: Docker Swarm cluster with shared GlusterFS replicated volume for HA
+title: Setup Replicated Volume for your Highly Available applications with Docker Swarm + GlusterFS
 image: ../assets/swarm-glusterfs.png
 date: 2020-03-28
 ---
@@ -66,7 +66,7 @@ Install GlusterFS by executing following commands:
 # systemctl status glusterd 
 ```
 
-### Create Gluster "bricks"
+### Create Gluster "Bricks"
 
 Now let's create the gluster data storage directories that commonly known as Brick *(**It’s very important you do this on every node.** This is because this directory is where all gluster nodes will store the distributed files locally).* Better to name them differently so it’s easy to identify on which node the replicated volumes reside. Also add an entry to your `/etc/fstab` file on each VM so that our brick gets mounted when the operating system boots or restarts.
 
@@ -90,7 +90,7 @@ Now let's create the gluster data storage directories that commonly known as Bri
 [swarm-worker-3]# mkdir /gluster/bricks/3/brick
 ```
 
-### Create trusted pool
+### Create Trusted Pool
 
 Before you can configure a GlusterFS volume, you must create a trusted storage pool of the storage servers that will provide bricks to the volume by peer probing the servers. The servers in a TSP are peers of each other.
 
@@ -113,9 +113,63 @@ Uuid: 809e52a3-735e-4d41-9457-0672c2d97372
 State: Peer in Cluster (Connected)
 ```
 
+### Create Replicated Volume
+
+GlusterFS has multiple [volume types](https://docs.gluster.org/en/v3/Administrator%20Guide/Setting%20Up%20Volumes/). For our HA architecture, we want to setup a “replicated” volume that stores the files created on each of the 3 VMs and hence the file is available to any app or container running on these VMs. Create the replicated volume named “gfs” with 3 replicas:
+
+```
+[swarm-worker-1]# gluster volume create gfs \
+> replica 3 \
+> swarm-worker-1:/gluster/bricks/1/brick \
+> swarm-worker-2:/gluster/bricks/2/brick \
+> swarm-worker-3:/gluster/bricks/3/brick
+
+volume create: gfs: success: please start the volume to access data
+
+[swarm-worker-1]# gluster volume start gfs
+volume start: gfs: success
+
+[swarm-worker-1]# gluster volume status gfs
+
+Status of volume: gfs
+Gluster process                             TCP Port  RDMA Port  Online  Pid
+------------------------------------------------------------------------------
+Brick swarm-worker-1:/gluster/bricks/1/bric
+k                                           49152     0          Y       8100
+Brick swarm-worker-2:/gluster/bricks/2/bric
+k                                           49152     0          Y       7908
+Brick swarm-worker-3:/gluster/bricks/3/bric
+k                                           49152     0          Y       7917
+Self-heal Daemon on localhost               N/A       N/A        Y       8121
+Self-heal Daemon on swarm-worker-3          N/A       N/A        Y       7938
+Self-heal Daemon on swarm-worker-2          N/A       N/A        Y       7930
+
+Task Status of Volume gfs
+------------------------------------------------------------------------------
+There are no active volume tasks
+
+[swarm-worker-1]# gluster volume info gfs
+
+Volume Name: gfs
+Type: Replicate
+Volume ID: aaab7171-69f9-464e-b61d-0e086b787141
+Status: Started
+Snapshot Count: 0
+Number of Bricks: 1 x 3 = 3
+Transport-type: tcp
+Bricks:
+Brick1: swarm-worker-1:/gluster/bricks/1/brick
+Brick2: swarm-worker-2:/gluster/bricks/2/brick
+Brick3: swarm-worker-3:/gluster/bricks/3/brick
+Options Reconfigured:
+transport.address-family: inet
+nfs.disable: on
+performance.client-io-threads: off
+```
+
 ### Security for the Volume
 
-File servers do not generally have firewalls as they are hosted in a secure zone of a private network. Just because it’s secure doesn’t mean you should leave it wide open for anyone with access to connect to.
+File system do not generally have firewalls as they are hosted in a secure zone of a private network. Just because it’s secure doesn’t mean you should leave it wide open for anyone with access to connect to.
 
 Using the `auth.allow` and `auth.reject` arguments in GlusterFS we can choose which IP addresses can access the volume. Access is provided at volume level, therefore you will need to alter access permissions on every new volume you create.
 
@@ -128,4 +182,51 @@ To authorize all the nodes we have to connect to GlusterFS Volume, run the follo
 
 > See the [GlusterFS Docs](https://docs.gluster.org/en/latest/Administrator%20Guide/Managing%20Volumes/) for further informations about Managing GlusterFS Volumes.
 
-### Mount the glusterFS
+### Mount the GlusterFS
+
+We’ll mount the volume where applications can access the files onto `/mnt` on each VM, and also append it to our `/etc/fstab` file so that it mounts on boot:
+
+```
+[swarm-worker-1]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
+[swarm-worker-1]# mount.glusterfs localhost:/gfs /mnt
+
+[swarm-worker-2]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
+[swarm-worker-2]# mount.glusterfs localhost:/gfs /mnt
+
+[swarm-worker-3]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
+[swarm-worker-3]# mount.glusterfs localhost:/gfs /mnt
+```
+
+and now let's verify mounted glusterfs volume:
+
+```
+# df -Th
+Filesystem     Type            Size  Used Avail Use% Mounted on
+udev           devtmpfs        1.8G     0  1.8G   0% /dev
+tmpfs          tmpfs           369M  968K  369M   1% /run
+/dev/sda1      ext4             29G  2.0G   27G   7% /
+tmpfs          tmpfs           1.9G   12K  1.9G   1% /dev/shm
+tmpfs          tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs          tmpfs           1.9G     0  1.9G   0% /sys/fs/cgroup
+/dev/loop1     squashfs         92M   92M     0 100% /snap/core/8689
+/dev/loop0     squashfs         94M   94M     0 100% /snap/core/8935
+/dev/loop2     squashfs         93M   93M     0 100% /snap/google-cloud-sdk/125
+/dev/sda15     vfat            105M  3.6M  101M   4% /boot/efi
+/dev/sdb       xfs              70G  104M   70G   1% /gluster/bricks/1
+/dev/loop4     squashfs         55M   55M     0 100% /snap/core18/1705
+tmpfs          tmpfs           369M     0  369M   0% /run/user/1001
+/dev/loop5     squashfs         98M   98M     0 100% /snap/google-cloud-sdk/126
+localhost:/gfs fuse.glusterfs   70G  821M   70G   2% /mnt
+```
+
+The total space available on the volume comes up as 70G even though we have 3 disks of 70G each connected to GlusterFS. This is due to our replication factor of 3. Total volume size is 210G, but with a replication factor or 3 for each file only 70G is available to us.
+
+## Test GlusterFS Replication
+
+```
+[swarm-worker-1]# echo "It Works!" | tee /mnt/README.md
+[swarm-worker-2]# cat /mnt/README.md
+It Works!
+[swarm-worker-3]# cat /mnt/README.md
+It Works!
+```
