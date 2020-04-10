@@ -14,6 +14,9 @@
 </p>
 
 ## Table of contents
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6b65bb71f2e341ab89f50703f35cd086)](https://app.codacy.com/manual/gibranduatiga/blog?utm_source=github.com&utm_medium=referral&utm_content=slovenski/blog&utm_campaign=Badge_Grade_Dashboard)
+
 + [Quick Start](http://github.com/slovenski/blog#quick-start)
 + [Deploy with Netlify](http://github.com/slovenski/blog#deploy-with-netlify)
 + [Folder Structure](http://github.com/slovenski/blog#folder-structure)
