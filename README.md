@@ -79,59 +79,74 @@ $ gatsby serve
 ## Folder Structure
 
 ```
-└── content
-    ├── assets
-    └── posts
+├── LICENSE
+├── README.md
+├── gatsby-browser.js
+├── gatsby-config.js
+├── gatsby-node.js
+├── gatsby-ssr.js
+├── jsconfig.json
+├── package.json
+├── content
+│   ├── assets
+│   └── posts
+├── data
+│   └── archive.json
+├── scripts
+│   └── deploy.sh
+├── src
+│   ├── assets
+│   │   └── icon.png
+│   ├── components
+│   │   ├── archive-featured.js
+│   │   ├── archive-list.js
+│   │   ├── call-out.js
+│   │   ├── codepen.js
+│   │   ├── cycle-mode.js
+│   │   ├── date.js
+│   │   ├── footer.js
+│   │   ├── global-header.js
+│   │   ├── header.js
+│   │   ├── post-list.js
+│   │   ├── profile-links.js
+│   │   ├── pronunciation.js
+│   │   ├── related-posts.js
+│   │   ├── seo.js
+│   │   └── writing-featured.js
+│   ├── design-system
+│   │   ├── blockquote.js
+│   │   ├── buttons.js
+│   │   ├── card-link.js
+│   │   ├── demo-source.js
+│   │   ├── icon.js
+│   │   ├── image.js
+│   │   ├── index.js
+│   │   ├── links.js
+│   │   ├── lists.js
+│   │   ├── page-header.js
+│   │   ├── primitives.js
+│   │   ├── skeletor.js
+│   │   ├── stack.js
+│   │   ├── system-functions.js
+│   │   └── typography.js
+│   ├── layouts
+│   │   ├── ds-to-mdx.js
+│   │   ├── layout.js
+│   │   ├── page-layout.js
+│   │   └── post-layout.js
+│   ├── pages
+│   │   ├── 404.js
+│   │   ├── archive.js
+│   │   ├── index.js
+│   │   └── writing.js
+│   ├── theme
+│   │   ├── color-mode-styles.js
+│   │   ├── colors.js
+│   │   ├── index.js
+│   │   ├── prism-styles.js
+│   │   └── theme.js
+│   └── use-color-mode.js
 └── static
-    ├── human.txt
-    └── logo.png    
-└── src
-    ├── assets
-    │   └── icon.png
-    ├── components
-    │   ├── call-out.js
-    │   ├── codepen.js
-    │   ├── cycle-mode.js
-    │   ├── date.js
-    │   ├── footer.js
-    │   ├── global-header.js
-    │   ├── header.js
-    │   ├── post-list.js
-    │   ├── profile-links.js
-    │   ├── pronunciation.js
-    │   ├── related-posts.js
-    │   ├── seo.js
-    │   └── writing-featured.js
-    ├── design-system
-    │   ├── blockquote.js
-    │   ├── buttons.js
-    │   ├── card-link.js
-    │   ├── demo-source.js
-    │   ├── icon.js
-    │   ├── image.js
-    │   ├── index.js
-    │   ├── links.js
-    │   ├── lists.js
-    │   ├── page-header.js
-    │   ├── primitives.js
-    │   ├── skeletor.js
-    │   ├── stack.js
-    │   ├── system-functions.js
-    │   └── typography.js
-    ├── layouts
-    │   ├── ds-to-mdx.js
-    │   ├── layout.js
-    │   ├── page-layout.js
-    │   └── post-layout.js
-    ├── pages
-    │   ├── 404.js
-    │   ├── index.js
-    │   └── writing.js
-    ├── theme
-    │   ├── color-mode-styles.js
-    │   ├── colors.js
-    │   ├── index.js
-    │   ├── prism-styles.js
-    │   └── theme.js
-    └── use-color-mode.js
+   ├── 3d.png
+   └── humans.txt
 ```
