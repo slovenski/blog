@@ -6,9 +6,9 @@
   A minimal, lightweight and modern blog starter for <a href="https://github.com/gatsbyjs/gatsby" target="_blank">Gatsby</a>.
 </h4>
 <p align="center">
-    <a target="_blank" href="https://app.netlify.com/sites/nervous-brahmagupta-d034d0/deploys"><img src="https://img.shields.io/netlify/81ba57e6-1ac4-4019-b262-14e22ba8b763" alt="Netlify" /></a>
+    <a target="_blank" href="https://app.netlify.com/sites/blogging-from-hell/deploys"><img src="https://img.shields.io/netlify/bd4d0ae4-7578-4a6a-9ca1-3359d0301206" alt="Netlify" /></a>
     <a target="_blank" href="https://travis-ci.org/slovenski/blog/builds"><img src="https://img.shields.io/travis/slovenski/blog" alt="Travis CI" /></a>
-    <a target="_blank" href="https://www.codefactor.io/repository/github/slovenski/blog"><img src="https://img.shields.io/codefactor/grade/github/slovenski/blog/master" alt="CodeFactor" /></a>
+    <a target="_blank" href="https://www.codacy.com/manual/gibranduatiga/blog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slovenski/blog&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/f6e7d02ab48144dea73c48ed470e1b97" alt="Codacy"/></a>
     <a target="_blank" href="https://github.com/slovenski/blog/issues"><img src="https://img.shields.io/github/issues/slovenski/blog" alt="Issue" /></a>
     <a target="_blank" href="https://github.com/slovenski/blog/blob/master/LICENSE"><img src="https://img.shields.io/github/license/slovenski/blog?color=blue" alt="MIT License" /></a>    
 </p>
@@ -30,7 +30,7 @@ gatsby new blog https://github.com/slovenski/blog
 
 #### Start Developing
 
-Navigate into your new site’s directory and start it up.
+Navigate into your new site's directory and start it up.
 
 ```sh
 cd blog
@@ -49,7 +49,7 @@ Note: You'll also see a second link: `http://localhost:8000/___graphql`. This is
 
 <a target="_blank" href="https://app.netlify.com/start/deploy?repository=https://github.com/slovenski/blog"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" /></a>
 
-After clicking that button, you’ll authenticate with GitHub and choose a repository name. Netlify will then automatically create a repository in your GitHub account with a copy of the files from the template. Next, it will build and deploy the new site on Netlify, bringing you to the site dashboard when the build is complete. Next, you’ll need to set up Netlify’s Identity service to authorize users to log in to the CMS.
+After clicking that button, you'll authenticate with GitHub and choose a repository name. Netlify will then automatically create a repository in your GitHub account with a copy of the files from the template. Next, it will build and deploy the new site on Netlify, bringing you to the site dashboard when the build is complete. Next, you'll need to set up Netlify's Identity service to authorize users to log in to the CMS.
 
 ## Deploy to Github Pages
 
