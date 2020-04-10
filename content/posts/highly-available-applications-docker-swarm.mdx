@@ -221,7 +221,7 @@ localhost:/gfs fuse.glusterfs   70G  821M   70G   2% /mnt
 
 The total space available on the volume comes up as 70G even though we have 3 disks of 70G each connected to GlusterFS. This is due to our replication factor of 3. Total volume size is 210G, but with a replication factor or 3 for each file only 70G is available to us.
 
-## Test GlusterFS Replication
+Test GlusterFS replication:
 
 ```
 [swarm-worker-1]# echo "It Works!" | tee /mnt/README.md
