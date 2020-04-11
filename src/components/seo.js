@@ -55,7 +55,7 @@ export function SEO({
         title={title}
         type={article ? 'article' : 'website'}
         url={`${siteUrl}${pathname}`}
-        locale="en_CA"
+        locale="en_US"
         name={siteTitle}
       />
       <Twitter
