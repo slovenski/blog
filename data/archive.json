@@ -6,6 +6,12 @@
       "featured": true
     },
     {
+      "title": "Unable to load auth plugin 'caching_sha2_password' MySQL 8.0",
+      "description": "MySQL Version 8.0",
+      "link": "https://gist.github.com/slovenski/09660a0047473407fa480aa67b26a06a",
+      "featured": true
+    },
+    {
       "title": "Essential tooling to enable Continuous Security",
       "description": "© Rich Mills",
       "slides": "https://www.slideshare.net/RichMills4/devsecops-essential-tooling-to-enable-continuous-security-20190916",
