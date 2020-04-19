@@ -71,23 +71,23 @@ Install GlusterFS by executing following commands:
 Now let's create the gluster data storage directories that commonly known as Brick *(**It’s very important you do this on every node.** This is because this directory is where all gluster nodes will store the distributed files locally).* Better to name them differently so it’s easy to identify on which node the replicated volumes reside. Also add an entry to your `/etc/fstab` file on each VM so that our brick gets mounted when the operating system boots or restarts.
 
 ```
-[swarm-worker-1]# mkfs.xfs /dev/sdb
-[swarm-worker-1]# mkdir -p /gluster/bricks/1
-[swarm-worker-1]# echo '/dev/sdb /gluster/bricks/1 xfs defaults 0 0' >> /etc/fstab
-[swarm-worker-1]# mount -a
-[swarm-worker-1]# mkdir /gluster/bricks/1/brick
+[swarm-worker-1 ~]# mkfs.xfs /dev/sdb
+[swarm-worker-1 ~]# mkdir -p /gluster/bricks/1
+[swarm-worker-1 ~]# echo '/dev/sdb /gluster/bricks/1 xfs defaults 0 0' >> /etc/fstab
+[swarm-worker-1 ~]# mount -a
+[swarm-worker-1 ~]# mkdir /gluster/bricks/1/brick
 
-[swarm-worker-2]# mkfs.xfs /dev/sdb
-[swarm-worker-2]# mkdir -p /gluster/bricks/2
-[swarm-worker-2]# echo '/dev/sdb /gluster/bricks/2 xfs defaults 0 0' >> /etc/fstab
-[swarm-worker-2]# mount -a
-[swarm-worker-2]# mkdir /gluster/bricks/2/brick
+[swarm-worker-2 ~]# mkfs.xfs /dev/sdb
+[swarm-worker-2 ~]# mkdir -p /gluster/bricks/2
+[swarm-worker-2 ~]# echo '/dev/sdb /gluster/bricks/2 xfs defaults 0 0' >> /etc/fstab
+[swarm-worker-2 ~]# mount -a
+[swarm-worker-2 ~]# mkdir /gluster/bricks/2/brick
 
-[swarm-worker-3]# mkfs.xfs /dev/sdb
-[swarm-worker-3]# mkdir -p /gluster/bricks/3
-[swarm-worker-3]# echo '/dev/sdb /gluster/bricks/3 xfs defaults 0 0' >> /etc/fstab
-[swarm-worker-3]# mount -a
-[swarm-worker-3]# mkdir /gluster/bricks/3/brick
+[swarm-worker-3 ~]# mkfs.xfs /dev/sdb
+[swarm-worker-3 ~]# mkdir -p /gluster/bricks/3
+[swarm-worker-3 ~]# echo '/dev/sdb /gluster/bricks/3 xfs defaults 0 0' >> /etc/fstab
+[swarm-worker-3 ~]# mount -a
+[swarm-worker-3 ~]# mkdir /gluster/bricks/3/brick
 ```
 
 ### Create Trusted Pool
@@ -97,11 +97,11 @@ Before you can configure a GlusterFS volume, you must create a trusted storage p
 To add a server to a TSP, use command `gluster peer probe <host>` to peer probe it from one of the other servers available.
 
 ```
-[swarm-worker-1]# gluster peer probe swarm-worker-2
+[swarm-worker-1 ~]# gluster peer probe swarm-worker-2
 peer probe: success.
-[swarm-worker-1]# gluster peer probe swarm-worker-3
+[swarm-worker-1 ~]# gluster peer probe swarm-worker-3
 peer probe: success.
-[swarm-worker-1]# gluster peer status
+[swarm-worker-1 ~]# gluster peer status
 Number of Peers: 2
 
 Hostname: swarm-worker-2
@@ -118,7 +118,7 @@ State: Peer in Cluster (Connected)
 GlusterFS has multiple [volume types](https://docs.gluster.org/en/v3/Administrator%20Guide/Setting%20Up%20Volumes/). For our HA architecture, we want to setup a “replicated” volume that stores the files created on each of the 3 VMs and hence the file is available to any app or container running on these VMs. Create the replicated volume named “gfs” with 3 replicas:
 
 ```
-[swarm-worker-1]# gluster volume create gfs \
+[swarm-worker-1 ~]# gluster volume create gfs \
 > replica 3 \
 > swarm-worker-1:/gluster/bricks/1/brick \
 > swarm-worker-2:/gluster/bricks/2/brick \
@@ -126,10 +126,10 @@ GlusterFS has multiple [volume types](https://docs.gluster.org/en/v3/Administrat
 
 volume create: gfs: success: please start the volume to access data
 
-[swarm-worker-1]# gluster volume start gfs
+[swarm-worker-1 ~]# gluster volume start gfs
 volume start: gfs: success
 
-[swarm-worker-1]# gluster volume status gfs
+[swarm-worker-1 ~]# gluster volume status gfs
 
 Status of volume: gfs
 Gluster process                             TCP Port  RDMA Port  Online  Pid
@@ -148,7 +148,7 @@ Task Status of Volume gfs
 ------------------------------------------------------------------------------
 There are no active volume tasks
 
-[swarm-worker-1]# gluster volume info gfs
+[swarm-worker-1 ~]# gluster volume info gfs
 
 Volume Name: gfs
 Type: Replicate
@@ -176,7 +176,7 @@ Using the `auth.allow` and `auth.reject` arguments in GlusterFS we can choose wh
 To authorize all the nodes we have to connect to GlusterFS Volume, run the following command below:
 
 ```
-[swarm-worker-1]# gluster volume set gfs auth.allow 10.148.0.228,10.148.0.229,10.148.0.230
+[swarm-worker-1 ~]# gluster volume set gfs auth.allow 10.148.0.228,10.148.0.229,10.148.0.230
 
 ```
 
@@ -187,14 +187,14 @@ To authorize all the nodes we have to connect to GlusterFS Volume, run the follo
 We’ll mount the volume where applications can access the files onto `/mnt` on each VM, and also append it to our `/etc/fstab` file so that it mounts on boot:
 
 ```
-[swarm-worker-1]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
-[swarm-worker-1]# mount.glusterfs localhost:/gfs /mnt
+[swarm-worker-1 ~]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
+[swarm-worker-1 ~]# mount.glusterfs localhost:/gfs /mnt
 
-[swarm-worker-2]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
-[swarm-worker-2]# mount.glusterfs localhost:/gfs /mnt
+[swarm-worker-2 ~]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
+[swarm-worker-2 ~]# mount.glusterfs localhost:/gfs /mnt
 
-[swarm-worker-3]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
-[swarm-worker-3]# mount.glusterfs localhost:/gfs /mnt
+[swarm-worker-3 ~]# echo 'localhost:/gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
+[swarm-worker-3 ~]# mount.glusterfs localhost:/gfs /mnt
 ```
 
 and now let's verify mounted glusterfs volume:
@@ -224,10 +224,10 @@ The total space available on the volume comes up as 70G even though we have 3 di
 Test GlusterFS replication:
 
 ```
-[swarm-worker-1]# echo "It Works!" | tee /mnt/README.md
-[swarm-worker-2]# cat /mnt/README.md
+[swarm-worker-1 ~]# echo "It Works!" | tee /mnt/README.md
+[swarm-worker-2 ~]# cat /mnt/README.md
 It Works!
-[swarm-worker-3]# cat /mnt/README.md
+[swarm-worker-3 ~]# cat /mnt/README.md
 It Works!
 ```
 
