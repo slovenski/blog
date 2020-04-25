@@ -13,6 +13,11 @@ import {
 } from '../use-color-mode';
 
 const GlobalStyle = createGlobalStyle`
+  html { --inter: 'Inter' }
+
+  @supports (font-variation-settings: normal) {
+    html { --inter: 'Inter' }
+  }
 
   body {
     background-color: ${props => props.theme.colors.neutral[7]};
