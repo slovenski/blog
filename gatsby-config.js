@@ -34,6 +34,7 @@ module.exports = {
       },
     },
     `gatsby-transformer-json`,
+    `gatsby-plugin-sitemap`,
     `@pauliescanlon/gatsby-mdx-embed`,
     {
       resolve: `gatsby-source-filesystem`,
